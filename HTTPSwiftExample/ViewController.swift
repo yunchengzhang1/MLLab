@@ -86,10 +86,31 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         self.dismiss(animated: true, completion: nil)
         
         let image = info["UIImagePickerControllerOriginalImage"] as? UIImage
- 
+        
+        //convert into cgImage to access the pixels
+        guard let cgImage = image?.cgImage, //might throw an error
+              let data = cgImage.dataProvider?.data,
+              let bytes = CFDataGetBytePtr(data) else{ //error handling
+            fatalError("Could not access image data")
+        }
+        assert(cgImage.colorSpace?.model == .rgb)
+        let bytesPerPixel = cgImage.bitsPerPixel / cgImage.bitsPerComponent
+        for y in 0 ..< cgImage.height{
+            for x in 0 ..< cgImage.width {
+                let offset = (y * cgImage.bytesPerRow) + (x * bytesPerPixel)
+                let grey = generateGreyScale(R: Float(bytes[offset]), G: Float(bytes[offset+1]), B: Float(bytes[offset+2]))
+                //uncomment below to test with printout
+//                let components = (r: bytes[offset], g:bytes[offset+1], b:bytes[offset+2])
+//                print("[x:\(x), y:\(y)] \(components)")
+            }
+        }
         DispatchQueue.main.async {
             self.imageView.image = image
         }
+    }
+    
+    func generateGreyScale(R: Float, G: Float, B: Float) -> Float{
+        return (R + G + B)/3
     }
     
     fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any]{

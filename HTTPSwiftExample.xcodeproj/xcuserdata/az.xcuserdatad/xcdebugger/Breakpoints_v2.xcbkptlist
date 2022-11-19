@@ -103,38 +103,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2980F7D8-FA26-44F4-B141-DA717980DADE"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HTTPSwiftExample/ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
-            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "75489FC6-0A4B-4F70-9643-E65105B43DCB"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HTTPSwiftExample/ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "E19C3065-C127-4C41-AC2C-5643BA25EE8C"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -142,9 +110,9 @@
             filePath = "HTTPSwiftExample/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
-            landmarkName = "convertFromUIImagePickerControllerInfoKeyDictionary(_:)"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "sendFeatures(_:withLabel:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -158,9 +126,9 @@
             filePath = "HTTPSwiftExample/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
-            landmarkName = "convertFromUIImagePickerControllerInfoKeyDictionary(_:)"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "sendFeatures(_:withLabel:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
