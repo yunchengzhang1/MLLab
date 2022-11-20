@@ -52,6 +52,9 @@
                                         <rect key="frame" x="0.0" y="179" width="147" height="34.5"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="Make Prediction"/>
+                                        <connections>
+                                            <action selector="uploadPrediction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="mI6-dp-iX6"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prediction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sie-jW-iYI">
                                         <rect key="frame" x="0.0" y="231.5" width="147" height="20.5"/>
@@ -102,6 +105,7 @@
                     <connections>
                         <outlet property="dsidLabel" destination="zbO-Jv-ztT" id="0xe-ao-hf9"/>
                         <outlet property="imageView" destination="a7T-7d-a55" id="yuS-R5-hwW"/>
+                        <outlet property="predictionLabel" destination="sie-jW-iYI" id="20a-k3-LPs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

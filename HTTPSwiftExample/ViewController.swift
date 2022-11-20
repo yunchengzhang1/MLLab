@@ -64,8 +64,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
     
     var openHand = false
     var fistHand = false
+    var prediction = false
     
+    @IBOutlet weak var predictionLabel: UILabel!
     @IBOutlet weak var dsidLabel: UILabel!
+    
     @IBAction func dsidChanged(_ sender: UISlider) {
         self.dsid = Int(sender.value)
     }
@@ -108,6 +111,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         self.present(picker, animated: true, completion: nil)
         print("uploadFistHand button clicked")
     }
+    
+    @IBAction func uploadPrediction(_ sender: UIButton) {
+        self.prediction = true
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .camera
+        self.present(picker, animated: true, completion: nil)
+        print("uploadPrediction button clicked")
+    }
+    
     //user canceled, do nothing
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
@@ -130,7 +143,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
             } else if self.fistHand {
                 self.fistHand = false
                 sendFeatures(imagestr, withLabel: "fist")
-            } else {
+            } else if self.prediction {
+                self.prediction = false
+                getPrediction(imagestr)
+            }else {
                 print("some error with boolean flags")
             }
         } else{
@@ -203,7 +219,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         postTask.resume() // start the task
     }
     
-    func getPrediction(_ array:[Double]){
+    func getPrediction(_ encoding:String){
         let baseURL = "\(SERVER_URL)/PredictOne"
         let postUrl = URL(string: "\(baseURL)")
         
@@ -211,7 +227,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         var request = URLRequest(url: postUrl!)
         
         // data to send in body of post request (send arguments as json)
-        let jsonUpload:NSDictionary = ["feature":array, "dsid":self.dsid]
+        let jsonUpload:NSDictionary = ["feature":encoding, "dsid":self.dsid]
         
         
         let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
@@ -232,8 +248,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
                 
                 let labelResponse = jsonDictionary["prediction"]!
                 print(labelResponse)
-                self.displayLabelResponse(labelResponse as! String)
-                
+                if let res = labelResponse as? Int, res == -404 {
+                    print("404!!!!")
+                } else {
+                    self.displayLabelResponse(labelResponse as! String)
+                }
             }
             
         })
@@ -243,11 +262,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
     
     func displayLabelResponse(_ response:String){
         switch response {
-        case "['open']":
-            print("hi")
+        case "open":
+            DispatchQueue.main.async {
+                self.predictionLabel.text = "open hand"
+            }
             break
         case "['fist']":
-            print("hi")
+            DispatchQueue.main.async {
+                self.predictionLabel.text = "fist"
+            }
             break
         default:
             print("Unknown")

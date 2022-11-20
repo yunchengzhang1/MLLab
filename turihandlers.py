@@ -20,6 +20,7 @@ import pickle
 from bson.binary import Binary
 import json
 import numpy as np
+import os
 
 class PrintHandlers(BaseHandler):
     def get(self):
@@ -84,12 +85,14 @@ class UpdateModelForDatasetId(BaseHandler):
         best_model = 'unknown'
         if len(data)>0:
             
-            model = tc.classifier.create(data,target='target',verbose=0)# training
+            model = tc.logistic_classifier.create(data,target='target',verbose=0)# training
             yhat = model.predict(data)
-            self.clf = model
+            self.clf[dsid] = model
             acc = sum(yhat==data['target'])/float(len(data))
             # save model for use later, if desired
             model.save('../models/turi_model_dsid%d'%(dsid))
+        else:
+            print("data length 0")
             
 
         # send back the resubstitution accuracy
@@ -114,12 +117,14 @@ class UpdateModelForDatasetId(BaseHandler):
             fh.close()
             
             url = "./decodedImage.jpg"
-            sframe_image = tc.image_analysis.load_images(url, "auto", with_path = False, recursive = True)
-            decodedFeatures.append(sframe_image)
+            # sframe_image = tc.image_analysis.load_images(url, "auto", with_path = False, recursive = True)
+            # sframe_image = tc.SArray([tc.Image(url)])
+            
+            decodedFeatures.append(decodedImage)
         
         data = {
             'target': labels,
-            'sequence': decodedFeatures
+            'sequence': np.array(decodedFeatures)
         }
         
         return tc.SFrame(data = data)
@@ -148,22 +153,38 @@ class PredictOneFromDatasetId(BaseHandler):
 
         # load the model from the database (using pickle)
         # we are blocking tornado!! no!!
-        if(self.clf == []):
-            print('Loading Model From file')
-            self.clf = tc.load_model('../models/turi_model_dsid%d'%(dsid))
+        if dsid not in self.clf:
+            print('loading model from file')
+            if os.path.exists('../models/turi_model_dsid%d'%(dsid)):
+                self.clf[dsid] = tc.load_model('../models/turi_model_dsid%d'%(dsid))
+            else:
+                print('could not load file with dsid%d'%(dsid))
+                self.write_json({"prediction": -404})
+                return
+        # if(self.clf == []):
+        #     print('Loading Model From file')
+        #     self.clf = tc.load_model('../models/turi_model_dsid%d'%(dsid))
   
 
-        predLabel = self.clf.predict(fvals);
-        self.write_json({"prediction":str(predLabel)})
+        predLabel = self.clf[dsid].predict(fvals)
+        print(np.unique(predLabel, return_counts=True))
+        self.write_json({"prediction":str(predLabel[0])})
 
     def get_features_as_SFrame(self, vals):
         # create feature vectors from array input
         # convert to dictionary of arrays for tc
 
-        tmp = [float(val) for val in vals]
-        tmp = np.array(tmp)
-        tmp = tmp.reshape((1,-1))
-        data = {'sequence':tmp}
+        # tmp = [float(val) for val in vals]
+        # tmp = np.array(tmp)
+        # tmp = tmp.reshape((1,-1))
+        # data = {'sequence':tmp}
+        
+        decodedImage = base64.b64decode(vals)
+    
+        fh = open("decodedImage.jpg", "wb")
+        fh.write(decodedImage)
+        fh.close()
+        data = {'sequence': decodedImage}
 
         # send back the SFrame of the data
-        return tc.SFrame(data=data)
+        return tc.SFrame(data)
