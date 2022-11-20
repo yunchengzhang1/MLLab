@@ -60,7 +60,7 @@ class UploadLabeledDatapointHandler(BaseHandler):
         '''
         dbid = self.db.labeledinstances.insert(
     
-            {"feature":sframe_image,"label":label,"dsid":sess}
+            {"feature":decodedImage,"label":label,"dsid":sess}
             );
       #  self.write_json({"id":str(dbid),
        #     "feature":[str(len(fvals))+" Points Received",
@@ -116,14 +116,15 @@ class UpdateModelForDatasetId(BaseHandler):
 
     def get_features_and_labels_as_SFrame(self, dsid):
         # create feature vectors from database
+        print("get features and labels as SFrame called")
         features=[]
         labels=[]
         for a in self.db.labeledinstances.find({"dsid":dsid}): 
-            features.append(a['feature']])
+            features.append(a['feature'])
             labels.append(a['label'])
 
         # convert to dictionary for tc
-        data = {'target':labels, 'sequence':np.array(features)}
+        data = {'target':labels, 'sequence':features}
 
 
         url = "./imageToSave.jpg"

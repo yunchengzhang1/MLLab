@@ -16,7 +16,7 @@
 // to see what your public facing IP address is, the ip address can be used here
 
 // CHANGE THIS TO THE URL FOR YOUR LAPTOP
-let SERVER_URL = "http://10.8.125.104:8000" // change this for your server name!!!
+let SERVER_URL = "http://192.168.1.217:8000" // change this for your server name!!!
 
 import UIKit
 import CoreMotion
