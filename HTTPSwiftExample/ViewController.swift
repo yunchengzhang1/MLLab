@@ -16,10 +16,30 @@
 // to see what your public facing IP address is, the ip address can be used here
 
 // CHANGE THIS TO THE URL FOR YOUR LAPTOP
-let SERVER_URL = "http://10.0.1.6:8000" // change this for your server name!!!
+let SERVER_URL = "http://192.168.1.67:8000" // change this for your server name!!!
 
 import UIKit
 import CoreMotion
+
+extension UIImage {
+    func pixelData() -> [UInt8]? {
+        let size = self.size
+        let dataSize = size.width * size.height * 4
+        var pixelData = [UInt8](repeating: 0, count: Int(dataSize))
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let context = CGContext(data: &pixelData,
+                                width: Int(size.width),
+                                height: Int(size.height),
+                                bitsPerComponent: 8,
+                                bytesPerRow: 4 * Int(size.width),
+                                space: colorSpace,
+                                bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)
+        guard let cgImage = self.cgImage else { return nil }
+        context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+
+        return pixelData
+    }
+ }
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSessionDelegate, UINavigationControllerDelegate {
     
@@ -41,6 +61,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
     let calibrationOperationQueue = OperationQueue()
     
     var ringBuffer = RingBuffer()
+    
+    var openHand = false
+    var fistHand = false
     
     @IBOutlet weak var dsidLabel: UILabel!
     @IBAction func dsidChanged(_ sender: UISlider) {
@@ -69,6 +92,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
     @IBOutlet weak var imageView: UIImageView!
     
     @IBAction func uploadOpenHand(_ sender: UIButton) {
+        self.openHand = true
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.sourceType = .camera
@@ -76,10 +100,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         print("uploadOpenHand button clicked")
     }
     
+    @IBAction func uploadFistHand(_ sender: UIButton) {
+        self.fistHand = true
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .camera
+        self.present(picker, animated: true, completion: nil)
+        print("uploadFistHand button clicked")
+    }
     //user canceled, do nothing
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
+    
     //where we send image
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
@@ -87,6 +120,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         
         let image = info["UIImagePickerControllerOriginalImage"] as? UIImage
  
+        let imageData: Data = image?.jpegData(compressionQuality: 0.1) ?? Data()
+        let imagestr: String = imageData.base64EncodedString()
+        
+        if (imagestr != nil){
+            if self.openHand {
+                self.openHand = false
+                sendFeatures(imagestr, withLabel: "open")
+            } else if self.fistHand {
+                self.fistHand = false
+                sendFeatures(imagestr, withLabel: "fist")
+            } else {
+                print("some error with boolean flags")
+            }
+        } else{
+            print("imagestr is nil")
+        }
+        
         DispatchQueue.main.async {
             self.imageView.image = image
         }
@@ -97,7 +147,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
     }
     
     //MARK: Comm with Server
-    func sendFeatures(_ array:[Double], withLabel label:NSString){
+    func sendFeatures(_ encoding:String, withLabel label:NSString){
         let baseURL = "\(SERVER_URL)/AddDataPoint"
         let postUrl = URL(string: "\(baseURL)")
         
@@ -105,7 +155,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         var request = URLRequest(url: postUrl!)
         
         // data to send in body of post request (send arguments as json)
-        let jsonUpload:NSDictionary = ["feature":array,
+        let jsonUpload:NSDictionary = ["feature":encoding,
                                        "label":"\(label)",
                                        "dsid":self.dsid]
         
@@ -123,10 +173,29 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
                 }
             }
             else{
+//                print("error response")
+//                let jsonDictionary = self.convertDataToDictionary(with: data)
+//                
+//                print(jsonDictionary["feature"]!)
+//                print(jsonDictionary["label"]!)
                 let jsonDictionary = self.convertDataToDictionary(with: data)
-                
-                print(jsonDictionary["feature"]!)
-                print(jsonDictionary["label"]!)
+                if (jsonDictionary["feature"] == nil){
+                    print("jsondic is nil")
+                }else{
+                    print("jsondic not nil")
+                }
+                if let feature = jsonDictionary["feature"]{
+                    print(feature)
+
+                }else{
+                    print("feature is nil")
+                }
+                if let label = jsonDictionary["label"]{
+                    print(label)
+
+                }else{
+                    print("label is nil")
+                }
             }
             
         })
