@@ -16,10 +16,33 @@
 // to see what your public facing IP address is, the ip address can be used here
 
 // CHANGE THIS TO THE URL FOR YOUR LAPTOP
-let SERVER_URL = "http://10.0.1.6:8000" // change this for your server name!!!
+let SERVER_URL = "http://10.8.125.104:8000" // change this for your server name!!!
 
 import UIKit
 import CoreMotion
+
+extension UIImage {
+    func pixelData() -> [Double]? {
+        let size = self.size
+        let dataSize = size.width * size.height * 4
+        var pixelData = [Double](repeating: 0, count: Int(dataSize))
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let context = CGContext(data: &pixelData,
+                                width: Int(size.width),
+                                height: Int(size.height),
+                                bitsPerComponent: 8,
+                                bytesPerRow: 4 * Int(size.width),
+                                space: colorSpace,
+                                bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)
+        guard let cgImage = self.cgImage else { return nil }
+        context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+//
+//        if (pixelData != nil){
+//            return pixelData
+//        }
+        return pixelData
+    }
+ }
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSessionDelegate, UINavigationControllerDelegate {
     
@@ -86,28 +109,56 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         self.dismiss(animated: true, completion: nil)
         
         let image = info["UIImagePickerControllerOriginalImage"] as? UIImage
+//        sendFeatures((image?.pixelData())!, withLabel: "test")
+//        let cropRect = CGRect(x: 0, y: 0, width: image?.size.width/2, height: image?.size.height/2).integral
         
-        //convert into cgImage to access the pixels
-        guard let cgImage = image?.cgImage, //might throw an error
-              let data = cgImage.dataProvider?.data,
-              let bytes = CFDataGetBytePtr(data) else{ //error handling
-            fatalError("Could not access image data")
+        let imageData: Data = image?.jpegData(compressionQuality: 0.1) ?? Data()
+        let imagestr: String = imageData.base64EncodedString()
+        
+//        print(imagestr)
+        if (imagestr != nil){
+            sendFeatures(imagestr, withLabel: "open")
+        } else{
+            print("imagestr is nil")
         }
-        assert(cgImage.colorSpace?.model == .rgb)
-        let bytesPerPixel = cgImage.bitsPerPixel / cgImage.bitsPerComponent
-        for y in 0 ..< cgImage.height{
-            for x in 0 ..< cgImage.width {
-                let offset = (y * cgImage.bytesPerRow) + (x * bytesPerPixel)
-                let grey = generateGreyScale(R: Float(bytes[offset]), G: Float(bytes[offset+1]), B: Float(bytes[offset+2]))
+        
+        
+        
+        //image.base64EncodedString()
+        //convert into cgImage to access the pixels
+//        guard let cgImage = image?.cgImage, //might throw an error
+//              let data = cgImage.dataProvider?.data,
+//              let bytes = CFDataGetBytePtr(data) else{ //error handling
+//            fatalError("Could not access image data")
+//        }
+//        assert(cgImage.colorSpace?.model == .rgb)
+//        let bytesPerPixel = cgImage.bitsPerPixel / cgImage.bitsPerComponent
+//        for y in 0 ..< cgImage.height{
+//            for x in 0 ..< cgImage.width {
+//                let offset = (y * cgImage.bytesPerRow) + (x * bytesPerPixel)
+//                let grey = generateGreyScale(R: Float(bytes[offset]), G: Float(bytes[offset+1]), B: Float(bytes[offset+2]))
+                
+                //print("[x:\(x), y:\(y)] grey: \(grey)")
                 //uncomment below to test with printout
 //                let components = (r: bytes[offset], g:bytes[offset+1], b:bytes[offset+2])
 //                print("[x:\(x), y:\(y)] \(components)")
-            }
-        }
+//            }
+//        }
         DispatchQueue.main.async {
             self.imageView.image = image
         }
     }
+//    func getGrayScale(img: UIImage ,width: Int, height: Int) -> UIImage{
+//        let image = CGRect(x: 0, y: 0, width: width, height: height)
+//        let colorSpace = CGColorSpaceCreateDeviceGray()
+//        let context = CGContext(data: nil, width: Int(width), height: Int(height), bitsPerComponent: 8, bytesPerRow: 0, space: colorSpace, bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue).rawValue)
+//        context?.draw(self.cgImage!, in: image)
+//        let imageReference = context!.makeImage()
+//        let newImage = UIImage(cgImage: imageReference!)
+//        return newImage
+//    }
+    
+    
     
     func generateGreyScale(R: Float, G: Float, B: Float) -> Float{
         return (R + G + B)/3
@@ -118,7 +169,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
     }
     
     //MARK: Comm with Server
-    func sendFeatures(_ array:[Double], withLabel label:NSString){
+    func sendFeatures(_ encoding:String, withLabel label:NSString){
         let baseURL = "\(SERVER_URL)/AddDataPoint"
         let postUrl = URL(string: "\(baseURL)")
         
@@ -126,10 +177,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         var request = URLRequest(url: postUrl!)
         
         // data to send in body of post request (send arguments as json)
-        let jsonUpload:NSDictionary = ["feature":array,
+        let jsonUpload:NSDictionary = ["feature":encoding,
                                        "label":"\(label)",
                                        "dsid":self.dsid]
-        
         
         let requestBody:Data? = self.convertDictionaryToData(with:jsonUpload)
         
@@ -145,9 +195,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
             }
             else{
                 let jsonDictionary = self.convertDataToDictionary(with: data)
-                
-                print(jsonDictionary["feature"]!)
-                print(jsonDictionary["label"]!)
+                if (jsonDictionary["feature"] == nil){
+                    print("jsondic is nil")
+                }else{
+                    print("jsondic not nil")
+                }
+                if let feature = jsonDictionary["feature"]{
+                    print(feature)
+
+                }else{
+                    print("feature is nil")
+                }
+                if let label = jsonDictionary["label"]{
+                    print(label)
+
+                }else{
+                    print("label is nil")
+                }
             }
             
         })
