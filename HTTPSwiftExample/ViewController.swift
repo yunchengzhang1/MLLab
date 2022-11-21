@@ -16,7 +16,7 @@
 // to see what your public facing IP address is, the ip address can be used here
 
 // CHANGE THIS TO THE URL FOR YOUR LAPTOP
-let SERVER_URL = "http://192.168.1.67:8000" // change this for your server name!!!
+let SERVER_URL = "http://192.168.1.217:8000" // change this for your server name!!!
 
 import UIKit
 import CoreMotion
@@ -67,6 +67,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
     var prediction = false
     
     @IBOutlet weak var predictionLabel: UILabel!
+ 
     @IBOutlet weak var dsidLabel: UILabel!
     
     @IBAction func dsidChanged(_ sender: UISlider) {
@@ -78,7 +79,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
             DispatchQueue.main.async{
                 // update label when set
               
-                self.dsidLabel.text = "Current DSID: \(self.dsid)"
+                self.dsidLabel.text = String(self.dsid)
             }
         }
     }
@@ -279,6 +280,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
     }
     
     
+    @IBAction func makeModelSVM(_ sender: AnyObject) {
+        // create a GET request for server to update the ML model with current data
+        let baseURL = "\(SERVER_URL)/UpdateModel2" //update model with svm classifier
+        let query = "?dsid=\(self.dsid)"
+        
+        let getUrl = URL(string: baseURL+query)
+        let request: URLRequest = URLRequest(url: getUrl!)
+        let dataTask : URLSessionDataTask = self.session.dataTask(with: request,
+                                                                  completionHandler:{(data, response, error) in
+            // handle error!
+            if (error != nil) {
+                if let res = response{
+                    print("Response:\n",res)
+                }
+            }
+            else{
+                let jsonDictionary = self.convertDataToDictionary(with: data)
+                
+                if let resubAcc = jsonDictionary["resubAccuracy"]{
+                    print("Resubstitution Accuracy is", resubAcc)
+                }
+            }
+            
+        })
+        
+        dataTask.resume() // start the task
+    }
     
     @IBAction func makeModel(_ sender: AnyObject) {
         
