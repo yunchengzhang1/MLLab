@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,104 +17,97 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="33" translatesAutoresizingMaskIntoConstraints="NO" id="IEw-YS-XhR">
-                                <rect key="frame" x="20" y="44" width="374" height="818"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="IEw-YS-XhR">
+                                <rect key="frame" x="20" y="20" width="335" height="627"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dsid" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zbO-Jv-ztT">
-                                        <rect key="frame" x="158.5" y="0.0" width="57" height="37"/>
+                                        <rect key="frame" x="139" y="0.0" width="57" height="37"/>
                                         <color key="backgroundColor" systemColor="systemBlueColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="31"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="50" maxValue="80" translatesAutoresizingMaskIntoConstraints="NO" id="O6N-TB-bVh">
-                                        <rect key="frame" x="35" y="70" width="304" height="177.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="300" id="rNO-dA-tz8"/>
-                                        </constraints>
+                                        <rect key="frame" x="-2" y="67" width="339" height="155"/>
                                         <connections>
                                             <action selector="dsidChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="8i8-Cx-6Nj"/>
                                         </connections>
                                     </slider>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a7T-7d-a55">
-                                        <rect key="frame" x="92.5" y="279.5" width="189" height="160.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="160.5" id="fOx-ii-mgv"/>
-                                        </constraints>
+                                        <rect key="frame" x="73" y="251" width="189" height="77"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnx-72-uCy">
-                                        <rect key="frame" x="105.5" y="473" width="163.5" height="35.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <state key="normal" title="Update Model">
-                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <buttonConfiguration key="configuration" style="gray" title="Update Model LR">
-                                            <fontDescription key="titleFontDescription" type="system" pointSize="18"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <action selector="makeModel:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="8rn-ZV-hYa"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ac6-Wm-3kt">
-                                        <rect key="frame" x="112.5" y="541.5" width="149" height="31"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Update Model SVM"/>
-                                        <connections>
-                                            <action selector="makeModelSVM:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="CG7-d7-eLr"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="29j-8H-W73">
-                                        <rect key="frame" x="113.5" y="605.5" width="147" height="31"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Upload Open Hand"/>
-                                        <connections>
-                                            <action selector="uploadOpenHand:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="bLR-Nm-fOt"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVF-xi-DMg">
-                                        <rect key="frame" x="138.5" y="669.5" width="97.5" height="31"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Upload Fist"/>
-                                        <connections>
-                                            <action selector="uploadFistHand:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Ndf-wQ-FMx"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LcB-l2-wZv">
-                                        <rect key="frame" x="123" y="733.5" width="128" height="31"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Make Prediction"/>
-                                        <connections>
-                                            <action selector="uploadPrediction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="mI6-dp-iX6"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prediction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sie-jW-iYI">
-                                        <rect key="frame" x="148.5" y="797.5" width="77.5" height="20.5"/>
-                                        <color key="backgroundColor" systemColor="linkColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="iBG-VL-Lnc">
+                                        <rect key="frame" x="82" y="358" width="171.5" height="269"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnx-72-uCy">
+                                                <rect key="frame" x="4" y="0.0" width="163.5" height="35.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <state key="normal" title="Update Model">
+                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <buttonConfiguration key="configuration" style="gray" title="Update Model LR">
+                                                    <fontDescription key="titleFontDescription" type="system" pointSize="18"/>
+                                                </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="makeModel:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="8rn-ZV-hYa"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ac6-Wm-3kt">
+                                                <rect key="frame" x="0.0" y="50.5" width="171.5" height="34.5"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="gray" title="Update Model SVM"/>
+                                                <connections>
+                                                    <action selector="makeModelSVM:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="CG7-d7-eLr"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="29j-8H-W73">
+                                                <rect key="frame" x="1" y="100" width="169.5" height="34.5"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="gray" title="Upload Open Hand"/>
+                                                <connections>
+                                                    <action selector="uploadOpenHand:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="bLR-Nm-fOt"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVF-xi-DMg">
+                                                <rect key="frame" x="30.5" y="149.5" width="110.5" height="34.5"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="gray" title="Upload Fist"/>
+                                                <connections>
+                                                    <action selector="uploadFistHand:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Ndf-wQ-FMx"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LcB-l2-wZv">
+                                                <rect key="frame" x="12.5" y="199" width="146.5" height="34.5"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="gray" title="Make Prediction"/>
+                                                <connections>
+                                                    <action selector="uploadPrediction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="mI6-dp-iX6"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prediction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sie-jW-iYI">
+                                                <rect key="frame" x="47" y="248.5" width="77.5" height="20.5"/>
+                                                <color key="backgroundColor" systemColor="linkColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="29j-8H-W73" firstAttribute="centerX" secondItem="O6N-TB-bVh" secondAttribute="centerX" id="9Ve-Az-HDu"/>
-                                    <constraint firstItem="LcB-l2-wZv" firstAttribute="centerX" secondItem="O6N-TB-bVh" secondAttribute="centerX" id="NzZ-cd-Hvo"/>
-                                    <constraint firstItem="a7T-7d-a55" firstAttribute="centerX" secondItem="O6N-TB-bVh" secondAttribute="centerX" id="XiQ-AZ-46l"/>
-                                    <constraint firstItem="zbO-Jv-ztT" firstAttribute="centerX" secondItem="O6N-TB-bVh" secondAttribute="centerX" id="YE7-vz-PHr"/>
-                                    <constraint firstItem="Ac6-Wm-3kt" firstAttribute="centerX" secondItem="O6N-TB-bVh" secondAttribute="centerX" id="bnj-fq-Qf6"/>
-                                    <constraint firstItem="sie-jW-iYI" firstAttribute="centerX" secondItem="O6N-TB-bVh" secondAttribute="centerX" id="mD3-Nz-e2O"/>
-                                    <constraint firstItem="kVF-xi-DMg" firstAttribute="centerX" secondItem="O6N-TB-bVh" secondAttribute="centerX" id="neR-sk-KCm"/>
-                                    <constraint firstItem="hnx-72-uCy" firstAttribute="centerX" secondItem="O6N-TB-bVh" secondAttribute="centerX" id="qPV-hZ-eA2"/>
+                                    <constraint firstItem="O6N-TB-bVh" firstAttribute="leading" secondItem="IEw-YS-XhR" secondAttribute="leading" id="dUC-P1-HeQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="O6N-TB-bVh" secondAttribute="trailing" id="dm3-OS-3mn"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="IEw-YS-XhR" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="5h5-YP-zOj"/>
-                            <constraint firstItem="IEw-YS-XhR" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="9vd-oF-DHp"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="IEw-YS-XhR" secondAttribute="trailing" id="TJg-3N-VAB"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="IEw-YS-XhR" secondAttribute="bottom" id="wDo-ke-vk0"/>
+                            <constraint firstItem="IEw-YS-XhR" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="ZsL-AI-1pc"/>
+                            <constraint firstItem="IEw-YS-XhR" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" id="jyW-NB-F7f"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="IEw-YS-XhR" secondAttribute="bottom" constant="20" id="qrz-oJ-3Hi"/>
+                            <constraint firstAttribute="trailing" secondItem="IEw-YS-XhR" secondAttribute="trailing" constant="20" id="vKG-aQ-eWj"/>
                         </constraints>
                     </view>
                     <connections>
@@ -125,7 +118,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="292.75362318840581" y="196.875"/>
+            <point key="canvasLocation" x="292" y="196.55172413793105"/>
         </scene>
     </scenes>
     <resources>

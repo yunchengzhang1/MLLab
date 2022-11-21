@@ -16,7 +16,8 @@
 // to see what your public facing IP address is, the ip address can be used here
 
 // CHANGE THIS TO THE URL FOR YOUR LAPTOP
-let SERVER_URL = "http://192.168.1.217:8000" // change this for your server name!!!
+//let SERVER_URL = "http://192.168.1.217:8000" // Arthur's IP
+let SERVER_URL = "http://192.168.1.67:8000" // Tim's IP
 
 import UIKit
 import CoreMotion
@@ -140,6 +141,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         if (imagestr != nil){
             if self.openHand { //call send features with the label "open"
                 self.openHand = false
+                print("sending openhand data")
                 sendFeatures(imagestr, withLabel: "open")
             } else if self.fistHand { //call send features with the label "open"
                 self.fistHand = false
@@ -270,7 +272,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
                 self.predictionLabel.text = "open hand"
             }
             break
-        case "['fist']":
+        case "fist":
             DispatchQueue.main.async {
                 self.predictionLabel.text = "fist"
             }
