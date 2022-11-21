@@ -128,7 +128,8 @@ class UpdateModelForDatasetId(BaseHandler):
             'target': labels,
             'sequence': np.array(decodedFeatures)
         }
-        print(len(np.array(decodedFeatures)))
+        print("np.array(decodedFeatures) type")
+        print(type(np.array(decodedFeatures)))
         
         return tc.SFrame(data = data)
     
@@ -218,7 +219,7 @@ class PredictOneFromDatasetId(BaseHandler):
   
         # todo: prediction is giving back an array with the size of 30k+, might be based on the pixels
         predLabel = self.clf[dsid].predict(fvals)
-        # print(predLabel)
+        print(predLabel)
         self.write_json({"prediction":str(predLabel[0])})
 
     def get_features_as_SFrame(self, vals):
@@ -235,7 +236,12 @@ class PredictOneFromDatasetId(BaseHandler):
         fh = open("decodedImage.jpg", "wb")
         fh.write(decodedImage)
         fh.close()
-        data = {'sequence': decodedImage}
-
+        # data = {'sequence': decodedImage}
+        data = {'sequence': np.array([decodedImage]) }
+        # print(type(decodedImage))
         # send back the SFrame of the data
         return tc.SFrame(data)
+        
+        
+        
+        #python tornado_turi_create.py
