@@ -138,13 +138,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         let imagestr: String = imageData.base64EncodedString()
         
         if (imagestr != nil){
-            if self.openHand {
+            if self.openHand { //call send features with the label "open"
                 self.openHand = false
                 sendFeatures(imagestr, withLabel: "open")
-            } else if self.fistHand {
+            } else if self.fistHand { //call send features with the label "open"
                 self.fistHand = false
                 sendFeatures(imagestr, withLabel: "fist")
-            } else if self.prediction {
+            } else if self.prediction { //call getPrediction with new picture
                 self.prediction = false
                 getPrediction(imagestr)
             }else {
@@ -182,6 +182,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
         request.httpMethod = "POST"
         request.httpBody = requestBody
         
+        //where post happens, sending the encoded image
         let postTask : URLSessionDataTask = self.session.dataTask(with: request,
                                                                   completionHandler:{(data, response, error) in
             if(error != nil){
@@ -196,6 +197,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, URLSess
 //                print(jsonDictionary["feature"]!)
 //                print(jsonDictionary["label"]!)
                 let jsonDictionary = self.convertDataToDictionary(with: data)
+                //printouts for error checking labels and sent pictures
                 if (jsonDictionary["feature"] == nil){
                     print("jsondic is nil")
                 }else{
